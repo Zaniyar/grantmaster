@@ -1,0 +1,9 @@
+{
+  "name": "grantmaster",
+  "version": "1.0.0",
+  "scripts": {
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
