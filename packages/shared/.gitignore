@@ -1,0 +1,5 @@
+# dependencies
+/node_modules
+
+# ignore compiles js files
+**/*.js
