@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "rootDir": "../../" // Updated to project root
+  },
+  "include": ["server.ts"] // Include shared directory
+}
