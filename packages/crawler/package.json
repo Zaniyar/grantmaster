@@ -1,0 +1,17 @@
+{
+  "name": "grantmaster-crawler",
+  "version": "1.0.0",
+  "description": "Crawler for PR comments",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "npx nodemon",
+    "build": "rimraf ./build && tsc",
+    "start": "npm run build && node build/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "grantmaster-shared": "^1.0.0",
+  },
+}
