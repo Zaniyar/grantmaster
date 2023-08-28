@@ -1,14 +1,38 @@
+import mongoose, { ConnectOptions } from 'mongoose';
+import { getPrIdsFromGithub, summarisePrLight } from 'grantmaster-crawler/src';
+import { ProposalModel, PullRequestSummaryModel, TeamModel, databaseConnection } from 'grantmaster-crawler/src/db/model';
 import { PullRequestSummaryDoc, PullRequestSummaryDto } from '../shared';
 
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config({ path: path.resolve(__dirname, '../crawler/.env') });
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
+if (!process.env.MONGODB_URI) {
+  throw new Error('❌ MANDATORY ENVIRONMENT VARIABLE NOT SET: MONGODB_URI');
+}
+
+interface MongoDBConnectOptions extends ConnectOptions {
+  useNewUrlParser?: boolean;
+  useUnifiedTopology?: boolean;
+}
+
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+} as MongoDBConnectOptions);
+
+const connection = mongoose.connection;
+connection.once('open', () => {
+  console.log('MongoDB database connection established successfully');
+});
 // Endpoint to trigger pull requests scan
 app.get('/api/crawler/scan-prs', async (req, res) => {
 });
