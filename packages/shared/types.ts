@@ -32,16 +32,42 @@ interface Evaluation {
   doc: string;
 }
 
+export interface Team {
+  name: string;
+  contactName?: string;
+  contactEmail?: string;
+  entity?: {
+    name?: string;
+    address?: string;
+  };
+  website?: string;
+  members?: string[];
+  repos?: string[];
+  linkedinProfiles?: string[];
+}
+
+export interface TeamDoc extends Document, Team {
+}
+
 interface Proposal {
   title: string;
   level: number;
   currencyAmount: CurrencyAmount;
+  team: Team | TeamDoc['_id'];
   paymentAddress: string;
   totalFTE: number;
   totalDuration: number;
   document: string;
   milestones: Milestone[];
   author: string;
+}
+
+export interface ProposalDoc extends Document, Proposal {
+  team: TeamDoc['_id'];
+}
+
+export interface ProposalDto extends Proposal {
+  team: Team;
 }
 
 interface PullRequestSummary {
@@ -72,4 +98,30 @@ export interface Message {
   author: string;
   message: string;
   timestamp: Date;
+}
+
+// -------------------
+// proposal extraction
+// -------------------
+export interface ProposalInfo {
+  title: string;
+  level: number;
+  currencyAmount: CurrencyAmount;
+  paymentAddress: string;
+  totalFTE: number;
+  totalDuration: number; 
+  team: Team;
+}
+
+export interface ProposalChapters {
+  projectOverview: string;
+  team: Team;
+  developmentStatus: string;
+  developmentRoadmap: string;
+  futurePlans: string;
+}
+
+export interface TeamPageDto extends Team {
+  proposals: ProposalDoc[];
+  pullRequests: PullRequestSummaryDoc[];
 }
