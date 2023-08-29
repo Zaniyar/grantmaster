@@ -37,6 +37,24 @@ connection.once('open', () => {
 app.get('/api/crawler/scan-prs', async (req, res) => {
 });
 
+const getPrDto = async  (prDoc: PullRequestSummaryDoc): Promise<PullRequestSummaryDto> => {
+  const pr = prDoc.toObject();
+  const proposalDoc = await ProposalModel.findOne({ _id: pr.proposal });
+  if (!proposalDoc) {
+    throw new Error(`Proposal not found for PR ${pr.prId}`);
+  }
+  const proposal = proposalDoc.toObject();
+
+
+  return {
+    ...pr,
+    updatedAt: pr.updatedAt,
+    proposal: {
+      ...proposal,
+    }
+  };
+}
+
 // endpoint to get all pull request summaries
 app.get('/api/pullrequestsummaries', async (req, res) => {
 });
