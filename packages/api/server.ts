@@ -45,12 +45,18 @@ const getPrDto = async  (prDoc: PullRequestSummaryDoc): Promise<PullRequestSumma
   }
   const proposal = proposalDoc.toObject();
 
+  const teamDoc = await TeamModel.findOne({ _id: proposal.team });
+  if (!teamDoc) {
+    throw new Error(`Team not found for proposal ${proposal._id}`);
+  }
+  const team = teamDoc.toObject();
 
   return {
     ...pr,
     updatedAt: pr.updatedAt,
     proposal: {
       ...proposal,
+      team,
     }
   };
 }
