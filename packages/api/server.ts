@@ -79,6 +79,24 @@ app.get('/api/pullrequestsummaries', async (req, res) => {
 
 // endpoint to get a single pull request summary
 app.get('/api/pullrequests/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    console.log('id: ', id);
+    
+    const pullRequestSummary = await PullRequestSummaryModel.findOne({ _id: id });
+    console.log('pullRequestSummary: ', pullRequestSummary);
+    
+    if (!pullRequestSummary) {
+      res.status(500).json({ error: `ID doesn't exist` });
+      return;
+    }
+
+    res.json(await getPrDto(pullRequestSummary));
+  } catch (error) {
+    console.log('Error fetching pull request:', error);
+    res.status(500).json({ error: 'Error fetching pull request' });
+  }
 });
 
 // endpoint to get all teams
