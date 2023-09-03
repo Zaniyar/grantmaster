@@ -63,6 +63,18 @@ const getPrDto = async  (prDoc: PullRequestSummaryDoc): Promise<PullRequestSumma
 
 // endpoint to get all pull request summaries
 app.get('/api/pullrequestsummaries', async (req, res) => {
+  try {
+    const pullRequestSummaries = await PullRequestSummaryModel.find();
+
+    const pullRequestSummariesDto = pullRequestSummaries.map(getPrDto);
+
+    const resolvedPullRequestSummariesDto = await Promise.all(pullRequestSummariesDto);
+
+    res.json(resolvedPullRequestSummariesDto);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 // endpoint to get a single pull request summary
