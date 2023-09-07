@@ -33,8 +33,35 @@ const connection = mongoose.connection;
 connection.once('open', () => {
   console.log('MongoDB database connection established successfully');
 });
+
+const pLimit = require('p-limit');
+
+// Middleware to log all requests
+app.use((req, res, next) => {
+  console.log(`ℹ️ ${new Date().toISOString()} - ${req.method} ${req.url} received`);
+  next();
+});
+
 // Endpoint to trigger pull requests scan
 app.get('/api/crawler/scan-prs', async (req, res) => {
+  try {
+    const includeClosed = req.query['include-closed'] === 'true';
+    const options = { state: includeClosed ? 'all' : 'open' };
+
+    const prIds = await getPrIdsFromGithub(options);
+    console.log(`received prIds (${prIds.length}): ${prIds.toString()}`)
+
+    const limit = pLimit(5); // limit to 5 promises in parallel to avoid timeout issues
+    const summaryPromises = prIds.map(prId => 
+      limit(() => summarisePrLight(prId))
+    );
+    await Promise.all(summaryPromises);
+
+    res.status(200).json({ message: 'Crawler successfully executed' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while running the crawler' });
+  }
 });
 
 const getPrDto = async  (prDoc: PullRequestSummaryDoc): Promise<PullRequestSummaryDto> => {
