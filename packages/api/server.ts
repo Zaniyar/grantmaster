@@ -128,6 +128,32 @@ app.get('/api/pullrequests/:id', async (req, res) => {
 
 // endpoint to get all teams
 app.get('/api/teams', async (req, res) => {
+  try {
+    const teams = await TeamModel.find({ name: { $ne: null } });
+    const populatedTeams: any[] = [];
+
+    for (const team of teams) {
+      const proposals = await ProposalModel.find({ team: team._id });
+      const pullRequests = await PullRequestSummaryModel.find({ proposal: { $in: proposals.map(p => p._id) } });
+
+      populatedTeams.push({
+        ...team.toObject(),
+        proposals,
+        pullRequests,
+      });
+    }
+    
+    res.json(populatedTeams);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Catch-all for 404 Not Found responses
+// has to be at the end of the app.use() middleware chain
+app.use((req, res, next) => {
+  res.status(404).send('Endpoint not found');
 });
 
 const PORT = 3001;
