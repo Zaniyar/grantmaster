@@ -2,6 +2,12 @@
   "name": "grantmaster",
   "version": "1.0.0",
   "scripts": {
+    "start": "concurrently \"npm run start:api\" \"npm run start:frontend\"",
+    "start:api": "npm run start --workspace=api",
+    "build:api": "npm run build --workspace=grantmaster-crawler && npm run build --workspace=api",
+    "start:frontend": "npm run start --workspace=frontend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "build": "npm run build:frontend && npm run build:api"
   },
   "workspaces": [
     "packages/*"
