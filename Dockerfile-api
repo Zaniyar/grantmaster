@@ -1,0 +1,14 @@
+FROM node:20 AS base
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+RUN npm ci --only=production
+RUN npm install -g ts-node
+
+COPY . .
+
+FROM base AS start
+
+ENTRYPOINT [ "npx", "ts-node", "packages/api/server.ts" ]

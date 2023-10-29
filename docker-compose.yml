@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always # restart container in case of failure
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - grantmaster-network
+  api:
+    build:
+      dockerfile: Dockerfile-api
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongo
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/grants-dashboard
+      - GITHUB_ORG=w3f
+      - GITHUB_REPO=grants-program
+    networks:
+      - grantmaster-network
+
+  frontend:
+    build:
+      dockerfile: Dockerfile-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - grantmaster-network
+
+networks:
+  grantmaster-network:
+volumes:
+  mongo-data:
