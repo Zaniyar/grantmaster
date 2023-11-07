@@ -1,0 +1,40 @@
+name: PR Activity Webhook
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+      - edited
+      - ready_for_review
+      - review_requested
+      - review_request_removed
+  pull_request_review:
+    types:
+      - submitted
+      - edited
+      - dismissed
+  pull_request_review_comment:
+    types:
+      - created
+      - edited
+      - deleted
+  issue_comment:
+    types:
+      - created
+      - edited
+      - deleted
+  status:
+
+jobs:
+  call_webhook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Webhook for PR events
+        if: github.event_name != 'push'
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          curl -X GET "http://crawler-baseurl.com/api/crawler/run-single/$PR_NUMBER"
