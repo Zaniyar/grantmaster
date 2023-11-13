@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Configuration, ChatCompletionRequestMessage } from "openai";
 import { ProposalModel, PullRequestSummaryModel, TeamModel, databaseConnection } from "./db/model";
 import { Message, Milestone, ProposalChapters, ProposalInfo } from "../../shared";
 import { extractProposalInfo } from ".";
@@ -14,11 +13,6 @@ const apiKey = process.env.GITHUB_API_KEY || '';
 const isPullRequest = true;
 const githubOrg = process.env.GITHUB_ORG;
 const githubRepo = process.env.GITHUB_REPO;
-
-// openai config
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 const getPrPageFromGithub = async (page: number, options = {}): Promise<number[]> => {
   const response = await axios.get(`https://api.github.com/repos/${githubOrg}/${githubRepo}/pulls`, {
@@ -246,7 +240,7 @@ export const getGithubData = async (prId: number, isPullRequest: boolean) => {
         ?.replace(/(\r\n\r\n\r\n|\n\n\n|\r\r\r)/gm, "<br>") // replace triple line breaks with single line breaks
         .replace(/(\r\n\r\n|\n\n|\r\r)/gm, "<br>") // replace double line breaks with single line breaks
         .replace(/\[([^\]]+)\]\((?:[^)\s]+|(?:\([^)\s]+\))*)\)/g, '$1') // remove links, e.g. [link](https://link.com)
-    } as ChatCompletionRequestMessage));
+    } as any));
 
   // File contents
   const changedFilesFromPR = await getChangedFilesFromPR(prId);
