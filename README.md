@@ -4,6 +4,16 @@
 
 - create a token (classic) with public_repo permissions at https://github.com/settings/tokens/new
 
+## Run tests
+
+```bash
+# step 1: install dependencies
+npm install
+
+# step 2: run tests
+npm run test
+```
+
 ## Run manually
 
 1. copy the contents of `packages/crawler/.env-example` into the `packages/crawler/.env` file and add the variable values

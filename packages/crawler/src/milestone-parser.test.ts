@@ -44,22 +44,22 @@ describe('parseMarkdown', () => {
         deliverables: [
           {
             name: "License",
-            number: "**0a.**",
+            number: "0a.",
             specification: "Apache 2.0",
           },
           {
             name: "Documentation",
-            number: "**0b.**",
+            number: "0b.",
             specification: "We will provide both **inline documentation** of the code and a basic **tutorial** that explains how a user can (for example) spin up one of our Substrate nodes and send test transactions, which will show how the new functionality works.",
           },
           {
             name: "Testing and Testing Guide",
-            number: "**0c.**",
+            number: "0c.",
             specification: "Core functions will be fully covered by comprehensive unit tests to ensure functionality and robustness. In the guide, we will describe how to run these tests.",
           },
           {
             name: "Docker",
-            number: "**0d.**",
+            number: "0d.",
             specification: "We will provide a Dockerfile(s) that can be used to test all the functionality delivered with this milestone.",
           },
           {
