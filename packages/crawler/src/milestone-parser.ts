@@ -16,7 +16,6 @@ export function parseMilestones(markdownText: string): Milestone[] {
 
     const nameMatch = milestoneText.match(/^([^\n]+)/);
     if (!nameMatch) {
-      console.log(`Missing name in milestone:\n${milestoneText}`);
       continue;
     } else if(nameMatch[1] === 'Overview') {
       continue;

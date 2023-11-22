@@ -1,38 +1,37 @@
-import { ProposalInfo, CurrencyAmount, ProposalChapters, Team } from "../../shared";
+import { ProposalInfo, ProposalChapters, Team } from "../../shared";
 
 const extractFromLine = (line: string, regex: RegExp): string | null => {
   const match = line.match(regex);
   return match ? match[0] : null;
 };
 
-const extractTeamMembers = (lines: string[]): string[] => {
+export const extractTeamMembers = (lines: string[]) => {
   let isTeamSection = false;
   const teamMembers: string[] = [];
-
   for (let line of lines) {
-      // Start reading when "### Team members" is found
-      if (line.trim() === "### Team members") {
-          isTeamSection = true;
-          continue; // skip current line and move to next
-      }
+    if (line.trim() === "### Team members") {
+      isTeamSection = true;
+      continue;
+    }
 
-      // Stop reading when another "###" is found
-      if (isTeamSection && line.trim().startsWith("###")) {
-          break;
-      }
+    if (isTeamSection && line.trim().startsWith("###")) {
+      break;
+    }
+
+    if (isTeamSection && line.trim().startsWith("- ")) {
+      const member = line.trim().replace(/^- /, "").trim();
+      teamMembers.push(member);
+    }
   }
 
-  // Flatten team members in case they are comma-separated in one line
-  const flattenedMembers = teamMembers.flatMap(member => member.split(',').map(m => m.trim()));
-
-  return flattenedMembers;
+  return teamMembers;
 };
 
-const extractTeamInfo = (lines: string[]): Team => {
+export const extractTeamInfo = (lines: string[]): Team => {
   let currentTeam: Partial<Team> = {};
 
   for (let line of lines) {
-    if (line.startsWith("- **Team Name:**")) {
+    if (line.trim().startsWith("- **Team Name:**")) {
       currentTeam.name = extractFromLine(line, /(?<=\*\*Team Name:\*\* ).*/) || "";
     } 
     if (line.startsWith("- **Contact Name:**")) {
