@@ -146,7 +146,7 @@ function PullRequestSummaryList() {
         return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
       }
     });
-  }, [filteredPullRequests, displayedReviewerUsername, sortAttribute, sortOrder, isReviewerLenseActive, apiBaseUrl]);
+  }, [filteredPullRequests, displayedReviewerUsername, sortAttribute, sortOrder, isReviewerLenseActive]);
 
   const syncAllPRs = async () => {
     try {

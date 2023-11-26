@@ -37,27 +37,9 @@ npm run test
 
 ## Run with Docker
 
-### Use docker compose for orchestrating the services
-
-This is the recommended way.
-1. set the missing env variables in the docker-compose file
-2. start all services using docker compose:
-    ```bash
-    # start db, api, frontend
-    # (use -d to run containers in the background)
-    $ docker compose up -d
-
-    # display the containers
-    # once everything is up and running, you can access the frontend on http://localhost:3000
-    $ docker ps
-
-    # tear down deployment
-    $ docker compose down
-    ```
-
 ### Manually build and run services
 
-This is the more manual way, that gives you more control but less convenience when spinning up the infrastructure.
+**Note:** Although there is a `docker-compose.yml` file, it doesn't seem to work reliable, most probably due to limitaitons with npm workspaces. Therefore, it's currently recommended to build and runt he docker containers manually, rather than relying on `docker-compose`.
 
 1. copy the contents of `packages/crawler/.env-example` into the `packages/crawler/.env` file and add the variable values
 2. create network:

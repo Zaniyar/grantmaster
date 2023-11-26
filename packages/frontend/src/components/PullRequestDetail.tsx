@@ -84,7 +84,7 @@ function PullRequestDetail() {
           {pullRequestSummary.status}
         </span>
       </h1>
-      <Card title="Overview" style={{ marginBottom: 16 }} extra={<a href={pullRequestSummary.url} target='_blank'>Open PR</a>}>
+      <Card title="Overview" style={{ marginBottom: 16 }} extra={<a href={pullRequestSummary.url} target='_blank' rel='noreferrer'>Open PR</a>}>
         <Descriptions>
           <Descriptions.Item label="Approvers">
             {pullRequestSummary.approvers.length}{' '}

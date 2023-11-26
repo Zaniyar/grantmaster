@@ -1,3 +1,6 @@
+# WARNING: This doesn't seem to work reliable, most probably due to limitaitons with npm workspaces. Therefore, it's currently recommended to build and runt he docker containers manually, rather than relying on `docker-compose`.
+# see also: https://github.com/Zaniyar/grantmaster/issues/1
+
 version: '3.8'
 
 services:
