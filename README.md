@@ -39,7 +39,7 @@ npm run test
 
 ### Manually build and run services
 
-**Note:** Although there is a `docker-compose.yml` file, it doesn't seem to work reliable, most probably due to limitaitons with npm workspaces. Therefore, it's currently recommended to build and runt he docker containers manually, rather than relying on `docker-compose`.
+_**Note:** Although there is a `docker-compose.yml` file, it doesn't seem to work reliable, most probably due to limitaitons with npm workspaces. Therefore, it's currently recommended to build and runt he docker containers manually, rather than relying on `docker-compose`._
 
 1. copy the contents of `packages/crawler/.env-example` into the `packages/crawler/.env` file and add the variable values
 2. create network:
