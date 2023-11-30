@@ -1,13 +1,13 @@
 import axios from "axios";
 import { ProposalModel, PullRequestSummaryModel, TeamModel, databaseConnection } from "./db/model";
-import { Message, Milestone, ProposalChapters, ProposalInfo } from "../../shared";
+import { Message, Milestone, ProposalInfo } from "../../shared";
 import { extractProposalInfo } from ".";
 import { parseMilestones } from "./milestone-parser";
 
 const dotenv = require('dotenv');
-
+const path = require('path');
 dotenv.config();
-
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 // github config
 const apiKey = process.env.GITHUB_API_KEY || '';
 const isPullRequest = true;
