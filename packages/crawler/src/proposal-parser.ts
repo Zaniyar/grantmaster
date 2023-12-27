@@ -85,9 +85,10 @@ export const extractProposalInfo = (fileContent: string): ProposalInfo => {
           amount: parseFloat(totalCostsInfo[0].replace(",", "")) || 0,
           currency: totalCostsInfo[1]
         };
-      } else if (line.startsWith("- **Level:**")) {
-        const supportedLevels = [1, 2, 3]
-        const level = extractFromLine(line, /(?<=\*\*Level:\*\* ).*/);
+      } else if (line.startsWith("- **Level:**") || line.startsWith("- **[Level](https://github.com/w3f/Grants-Program/tree/master#level_slider-levels):**")) {
+        const supportedLevels = [1, 2, 3];
+        const lineWithoutUrl = line.replace("- **[Level](https://github.com/w3f/Grants-Program/tree/master#level_slider-levels):**", "- **Level:**");
+        const level = extractFromLine(lineWithoutUrl, /(?<=\*\*Level:\*\* ).*/);
         proposalInfo.level = supportedLevels
           .reduce((finalLevel, currentLevel) => 
             level?.includes(currentLevel.toString()) ? currentLevel : finalLevel, 0

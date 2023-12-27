@@ -35,7 +35,13 @@ describe('parser', () => {
       const info = extractProposalInfo(content);
       expect(info.level).toBe(3);
     });
-  
+
+    it('extracts level, even with urls in it', () => {
+      const content = `- **[Level](https://github.com/w3f/Grants-Program/tree/master#level_slider-levels):** 2`;
+      const info = extractProposalInfo(content);
+      expect(info.level).toBe(2);
+    });
+
     it('extracts total FTE', () => {
       const fteLine = `- **Full-Time Equivalent (FTE):** 2.5`;
       const info = extractProposalInfo(fteLine);
