@@ -64,6 +64,25 @@ app.get('/api/crawler/scan-prs', async (req, res) => {
   }
 });
 
+// Endpoint to trigger single PR scan
+app.get('/api/crawler/scan-pr/:prId', async (req, res) => {
+  try {
+    const prId = req.params.prId; // get the PR id from the route parameter
+    if (!prId) {
+      return res.status(400).json({ error: 'No PR ID provided' });
+    }
+
+    console.log(`Processing PR ID: ${prId}`);
+
+    await summarisePrLight(prId);
+
+    res.status(200).json({ message: `Crawler successfully executed for PR ID: ${prId}` });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: `An error occurred while running the crawler for PR ID: ${req.params.prId}` });
+  }
+});
+
 const getPrDto = async  (prDoc: PullRequestSummaryDoc): Promise<PullRequestSummaryDto> => {
   const pr = prDoc.toObject();
   const proposalDoc = await ProposalModel.findOne({ _id: pr.proposal });
