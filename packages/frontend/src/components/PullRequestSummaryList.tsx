@@ -135,11 +135,16 @@ function PullRequestSummaryList() {
           return 1;
         }
       }
+
+      // Handle sorting by 'prId'
+      if (sortAttribute === 'proposal.prId') {
+        return sortOrder === 'asc' ? a.prId - b.prId : b.prId - a.prId;
+      }
   
       // Either the feature is inactive or neither PR has user participation, use the existing logic to sort
       const valueA = _.get(a, sortAttribute);
       const valueB = _.get(b, sortAttribute);
-  
+
       if (sortOrder === 'asc') {
         return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
       } else {
@@ -215,6 +220,7 @@ function PullRequestSummaryList() {
             <Option value="lastUpdateSuccessful">Update Status</Option>
             <Option value="proposal.title">Title</Option>
             <Option value="proposal.author">Author</Option>
+            <Option value="proposal.prId">ID</Option>
           </Select>
           <Radio.Group
             defaultValue={sortOrder}
@@ -314,7 +320,7 @@ function PullRequestSummaryList() {
                     {pr.status}
                   </span>&nbsp;
                   <Link to={`/pullrequests/${pr._id}`}>
-                    {pr.proposal.title} by {pr.proposal.author}
+                   #{pr.prId} - {pr.proposal.title} by {pr.proposal.author}
                   </Link>&nbsp;
                   {pr.labels.map((label) => (
                     <span

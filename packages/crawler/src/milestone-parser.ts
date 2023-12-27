@@ -1,7 +1,7 @@
 import { Deliverable, Milestone } from "../../shared";
 
 export function parseMilestones(markdownText: string): Milestone[] {
-  const developmentRoadmapMatch = markdownText.match(/## Development Roadmap :nut_and_bolt:\n([\s\S]*)/);
+  const developmentRoadmapMatch = markdownText.match(/## Development Roadmap[^\n]*\n([\s\S]*)/);
   if (!developmentRoadmapMatch) {
     console.log('No development roadmap section found.');
     return [];

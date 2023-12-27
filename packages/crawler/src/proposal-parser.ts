@@ -85,10 +85,16 @@ export const extractProposalInfo = (fileContent: string): ProposalInfo => {
           amount: parseFloat(totalCostsInfo[0].replace(",", "")) || 0,
           currency: totalCostsInfo[1]
         };
-      } else if (line.startsWith("- **Level:**")) {
-        proposalInfo.level = parseInt(extractFromLine(line, /(?<=\*\*Level:\*\* ).*/) || "0", 10);
+      } else if (line.startsWith("- **Level:**") || line.startsWith("- **[Level](https://github.com/w3f/Grants-Program/tree/master#level_slider-levels):**")) {
+        const supportedLevels = [1, 2, 3];
+        const lineWithoutUrl = line.replace("- **[Level](https://github.com/w3f/Grants-Program/tree/master#level_slider-levels):**", "- **Level:**");
+        const level = extractFromLine(lineWithoutUrl, /(?<=\*\*Level:\*\* ).*/);
+        proposalInfo.level = supportedLevels
+          .reduce((finalLevel, currentLevel) => 
+            level?.includes(currentLevel.toString()) ? currentLevel : finalLevel, 0
+          );
       } else if (line.startsWith("- **Payment Address:**")) {
-        proposalInfo.paymentAddress = extractFromLine(line, /(?<=\*\*Payment Address:\*\* ).*/) || "";
+        proposalInfo.paymentAddress = extractFromLine(line, /(?<=\*\*Payment Address:\*\* )[\w\d\s().-]+/) || "";
       } else if (line.startsWith("# ")) {
         const title = line.substring(2).trim();
         return { ...proposalInfo, title };
@@ -104,10 +110,10 @@ export const extractProposalInfo = (fileContent: string): ProposalInfo => {
           }
         })();
         return { ...proposalInfo, totalDuration };
-      } else if (/^- \**\[?Full-Time Equivalent (FTE)\]?:?\**/i.test(line)) {
+      } else if (/^- \**\[?Full-Time Equivalent \(FTE\)\]?:?\**/i.test(line)) {
         const totalFTE = (() => {
           try {
-            return parseFloat(line.replace(/^- \**\[?Full-Time Equivalent (FTE)\]?:?\**\s*/i, "").trim());
+            return parseFloat(line.replace(/^- \**\[?Full-Time Equivalent \(FTE\)\]?:?\**\s*/i, "").trim());
           } catch (error) {
             return 0;
           }

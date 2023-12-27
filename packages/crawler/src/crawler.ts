@@ -262,7 +262,7 @@ export const getGithubData = async (prId: number, isPullRequest: boolean) => {
     : 'N/A';
 
   console.info(`🔄 PARSING ${prId}`)
-  const milestones = parseMilestones(grantApplicationDoc);
+  const milestones = parseMilestones(Buffer.from(grantApplicationDoc, 'base64').toString('utf-8'));
 
   return {
     allComments,

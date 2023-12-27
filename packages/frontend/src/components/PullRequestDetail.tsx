@@ -44,7 +44,7 @@ function PullRequestDetail() {
 
   const rescanSinglePr = async () => {
     try {
-      const response = await axios.get(`${apiBaseUrl}/crawler/run-single/${pullRequestSummary.prId}`);
+      const response = await axios.get(`${apiBaseUrl}/api/crawler/scan-pr/${pullRequestSummary.prId}`);
       console.log(response.data.message);
       // You can also show a notification or update the state to reflect the changes
     } catch (error) {

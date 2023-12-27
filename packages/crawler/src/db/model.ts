@@ -106,7 +106,11 @@ class DatabaseConnection {
         // pass: process.env.MONGODB_PASSWORD,
       };
 
-      await connect(`mongodb://${process.env.MONGO_HOST}/grants-dashboard`, options);
+      if (!process.env.MONGODB_URI) {
+        throw new Error('❌ MANDATORY ENVIRONMENT VARIABLE NOT SET: MONGODB_URI');
+      }
+      
+      await connect(process.env.MONGODB_URI, options);
       console.log('MongoDB connected');
     } catch (error) {
       console.log('MongoDB connection error', error);
